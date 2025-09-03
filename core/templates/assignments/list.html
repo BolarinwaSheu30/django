@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Assignments - EduTrack{% endblock %}
+
+{% block content %}
+<h2>Assignments for {{ course.title }}</h2>
+
+{% for assignment in assignments %}
+    <div style="margin-bottom: 1rem; padding: 1rem; border: 1px solid #ccc; border-radius: 5px;">
+        <h3>{{ assignment.title }}</h3>
+        <p>{{ assignment.description }}</p>
+
+        {% if user.profile.user_type == 'student' and assignment.id not in submitted_assignments %}
+            <a href="{% url 'submission_create' assignment.pk %}">Submit</a>
+        {% endif %}
+
+        {% if user == course.teacher %}
+            <a href="{% url 'submission_list' assignment.pk %}">View Submissions</a>
+        {% endif %}
+    </div>
+{% empty %}
+    <p>No assignments yet.</p>
+{% endfor %}
+
+{% if user == course.teacher %}
+    <a href="{% url 'assignment_create' course.pk %}">Create Assignment</a>
+{% endif %}
+{% endblock %}

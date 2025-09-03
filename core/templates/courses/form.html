@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{% if course %}Update Course{% else %}Create Course{% endif %}</h1>
+<form method="post" action="{% if course %}{% url 'course_update' course.pk %}{% else %}{% url 'course_create' %}{% endif %}">
+    {% csrf_token %}
+    <input name="title" value="{% if course %}{{ course.title }}{% endif %}" placeholder="Course Title">
+    <textarea name="description">{% if course %}{{ course.description }}{% endif %}</textarea>
+    <button type="submit">{% if course %}Update{% else %}Create{% endif %}</button>
+</form>
+{% endblock %}

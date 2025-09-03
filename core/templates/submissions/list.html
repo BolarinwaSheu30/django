@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Submissions - EduTrack{% endblock %}
+
+{% block content %}
+<h2>Submissions for {{ assignment.title }}</h2>
+
+{% for submission in submissions %}
+    <div style="margin-bottom: 1rem; padding: 1rem; border: 1px solid #ccc; border-radius: 5px;">
+        <p><strong>Student:</strong> {{ submission.student.username }}</p>
+        <p><strong>Response:</strong> {{ submission.response }}</p>
+        <p><strong>Reviewed:</strong> {{ submission.reviewed|yesno:"✅ Yes,❌ No" }}</p>
+
+        {% if not submission.reviewed %}
+            <a href="{% url 'submission_review' submission.pk %}">Mark as Reviewed</a>
+        {% endif %}
+    </div>
+{% empty %}
+    <p>No submissions yet.</p>
+{% endfor %}
+{% endblock %}

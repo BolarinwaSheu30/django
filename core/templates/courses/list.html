@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Courses - EduTrack{% endblock %}
+
+{% block content %}
+<h2>Courses</h2>
+
+{% for course in courses %}
+    <div style="margin-bottom: 1rem; padding: 1rem; border: 1px solid #ccc; border-radius: 5px;">
+        <h3>{{ course.title }}</h3>
+        <p>{{ course.description }}</p>
+
+        {% if user.profile.user_type == 'student' and course.id not in enrolled_courses %}
+            <a href="{% url 'enroll' course.pk %}">Enroll</a>
+        {% endif %}
+
+        {% if user == course.teacher %}
+            <a href="{% url 'course_update' course.pk %}">Edit</a>
+            <a href="{% url 'course_delete' course.pk %}">Delete</a>
+        {% endif %}
+
+        <a href="{% url 'assignment_list' course.pk %}">Assignments</a>
+    </div>
+{% empty %}
+    <p>No courses available yet.</p>
+{% endfor %}
+
+{% if user.profile.user_type == 'teacher' %}
+    <a href="{% url 'course_create' %}">Create Course</a>
+{% endif %}
+{% endblock %}

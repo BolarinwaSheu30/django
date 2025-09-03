@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Create Course - EduTrack{% endblock %}
+
+{% block content %}
+<h2>Create Course</h2>
+<form method="post">
+    {% csrf_token %}
+    <label>Title:</label><br>
+    <input type="text" name="title" required><br><br>
+
+    <label>Description:</label><br>
+    <textarea name="description" rows="4" cols="40" required></textarea><br><br>
+
+    <button type="submit">Create</button>
+</form>
+{% endblock %}

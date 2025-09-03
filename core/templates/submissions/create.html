@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Assignment - EduTrack{% endblock %}
+
+{% block content %}
+<h2>Submit Assignment: {{ assignment.title }}</h2>
+
+{% if already_submitted %}
+    <p>You have already submitted this assignment.</p>
+{% else %}
+    <form method="post">
+        {% csrf_token %}
+        <textarea name="response" rows="5" cols="50" placeholder="Write your response here..." required></textarea><br><br>
+        <button type="submit">Submit</button>
+    </form>
+{% endif %}
+{% endblock %}

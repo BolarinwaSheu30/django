@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Update Course - EduTrack{% endblock %}
+
+{% block content %}
+<h2>Update Course</h2>
+<form method="post">
+    {% csrf_token %}
+    <label>Title:</label><br>
+    <input type="text" name="title" value="{{ course.title }}" required><br><br>
+
+    <label>Description:</label><br>
+    <textarea name="description" rows="4" cols="40" required>{{ course.description }}</textarea><br><br>
+
+    <button type="submit">Save Changes</button>
+</form>
+{% endblock %}
