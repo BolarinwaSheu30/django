@@ -1,1 +1,1 @@
-web: gunicorn edutrack.wsgi
+web: gunicorn edutrack.wsgi:application
