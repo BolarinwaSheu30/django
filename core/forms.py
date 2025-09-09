@@ -8,9 +8,11 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'email', 'password1', 'password2', 'user_type']
 
     def save(self, commit=True):
         user = super().save(commit=commit)
-        Profile.objects.create(user=user, user_type=self.cleaned_data['user_type'])
+        if commit:
+            user.profile.user_type = self.cleaned_data['user_type']
+            user.profile.save()
         return user

@@ -88,7 +88,7 @@ def assignment_list(request, course_pk):
     assignments = Assignment.objects.filter(course=course)
 
     submitted_assignments = []
-    if request.user.profile.user_type == 'studdent':
+    if request.user.profile.user_type == 'student':
         submitted_assignments = list(
             Submission.objects.filter(student=request.user, assignment__course=course).values_list('assignment_id', flat=True)
             )
