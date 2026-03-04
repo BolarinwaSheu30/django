@@ -1,17 +1,25 @@
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zq$5ynu1_f+xsu$yrb1rk8^4=gjfse-g+rqw-npy2r=j-wqdy+'
-
+SECRET_KEY =  os.environ.get(
+    "SECRET_KEY",
+    "django-insecure-zq$5ynu1_f+xsu$yrb1rk8^4=gjfse-g+rqw-npy2r=j -wqdy+"
+)
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = 'RENDER' not in os.environ
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
+CSRF_TRUSTED_ORIGINS = []
+if RENDER_EXTERNAL_HOSTNAME:
+    CSRF_TRUSTED_ORIGINS.append(f"https://{RENDER_EXTERNAL_HOSTNAME}")
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -68,13 +76,12 @@ WSGI_APPLICATION = 'edutrack.wsgi.application'
 # Database
 # Default: SQLite (for local development)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": dj_database_url.config(
+        conn_max_age= 600,
+        ssl_require=True
+    )
+    
 }
-
-
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -98,8 +105,8 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STORAGES = {
     "default": {
